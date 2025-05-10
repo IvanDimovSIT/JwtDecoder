@@ -33,12 +33,12 @@ groupIntoByte :: [Int] -> [[Int]]
 groupIntoByte [] = []
 groupIntoByte xs = filter ((8 ==) . length) $ take 8 xs : groupIntoByte (drop 8 xs)
 
+
 decodeBase64 :: String -> Either String String
 decodeBase64 jwt = decode . groupIntoByte . concat . valuesToBits <$> charsToValues jwt
     where
         decode = foldl (\acc bits -> acc ++ [bitsToChar bits]) ""
         bitsToChar bits = chr $ foldl (\acc x -> acc * 2 + x) 0 bits
-
 
 
 splitString :: Char -> String -> [String]
