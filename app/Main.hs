@@ -22,9 +22,10 @@ printObject ((key, value) : rest) = do
     putStrLn $ key ++ " : " ++ checkAndDisplayAsDate key value
     printObject rest
     where
-        convertToDate str = posixSecondsToUTCTime . fromIntegral <$> readMaybe str
+        isDateKey key = key `elem` ["iat", "exp", "nbf", "auth_time", "updated_at", "rat"]
+        convertToDate str = posixSecondsToUTCTime . fromIntegral <$> (readMaybe str :: Maybe Int)
         checkAndDisplayAsDate key value
-            | key == "iat" || key == "exp" =
+            | isDateKey key =
                 value ++ maybe "" (formatTime defaultTimeLocale " (UTC %Y-%m-%d %H:%M:%S)") (convertToDate value)
             | otherwise = value
 

@@ -44,6 +44,7 @@ decodeBase64 jwt = decode . groupIntoByte . concat . valuesToBits <$> charsToVal
 splitString :: Char -> String -> [String]
 splitString sep = foldr splitHelper [""]
     where
+        splitHelper _ [] = error "Unreachable pattern" 
         splitHelper c (x : xs)
             | c == sep = "" : (x : xs)
             | otherwise = (c : x) : xs
